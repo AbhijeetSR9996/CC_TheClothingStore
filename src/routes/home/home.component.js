@@ -40,6 +40,18 @@ const Home = () => {
   return (
     <>
       <div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            backgroundColor: "transparent",
+            marginBottom: "12px",
+          }}
+        >
+          <Button style={{ fontSize: "100px" }} buttonType={""} onClick={{}}>
+            CATEGORIES
+          </Button>
+        </div>
         <Directory categories={categories} />
         <Outlet />
         <div

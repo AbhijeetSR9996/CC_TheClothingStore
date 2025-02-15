@@ -2,15 +2,14 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { CartContext } from "../../contexts/cart.context";
-
 import CheckoutItem from "../../components/checkout-item/checkout-item.component";
-
 import Button from "../../components/button/button.component";
 
 import "./checkout.styles.scss";
 
 const Checkout = () => {
-  const { cartItems, cartTotal, clearCart } = useContext(CartContext); // Add clearCart from context
+  const { cartItems, cartTotal, clearCart, setIsCartOpen } =
+    useContext(CartContext); // Get setIsCartOpen from context
   const [isOpenNow, setIsOpenNow] = useState(false);
   const [isOpenLater, setIsOpenLater] = useState(false);
 
@@ -20,23 +19,11 @@ const Checkout = () => {
     navigate("/shop");
   };
 
-  const handleOpenNow = () => {
-    setIsOpenNow(true);
-  };
-
-  const handleCloseNow = () => {
+  const handleCloseAndClearCart = () => {
     setIsOpenNow(false);
-    clearCart(); // Clear the cart
-    navigate("/");
-  };
-
-  const handleOpenLater = () => {
-    setIsOpenLater(true);
-  };
-
-  const handleCloseLater = () => {
     setIsOpenLater(false);
     clearCart(); // Clear the cart
+    setIsCartOpen(false); // Close the dropdown cart
     navigate("/");
   };
 
@@ -66,7 +53,7 @@ const Checkout = () => {
           ))}
           <div className="total">
             TOTAL AMOUNT: &#x20B9;{cartTotal}
-            <Button onClick={handleOpenNow}>BUY NOW</Button>
+            <Button onClick={() => setIsOpenNow(true)}>BUY NOW</Button>
             <div>&nbsp;</div>
             {isOpenNow && (
               <div
@@ -83,11 +70,13 @@ const Checkout = () => {
               >
                 <h4>Payment Successful..!!</h4>
                 <center>
-                  <button onClick={handleCloseNow}>TAKE ME TO HOMEPAGE</button>
+                  <button onClick={handleCloseAndClearCart}>
+                    TAKE ME TO HOMEPAGE
+                  </button>
                 </center>
               </div>
             )}
-            <Button buttonType="inverted" onClick={handleOpenLater}>
+            <Button buttonType="inverted" onClick={() => setIsOpenLater(true)}>
               BUY LATER
             </Button>
             {isOpenLater && (
@@ -105,7 +94,7 @@ const Checkout = () => {
               >
                 <h4>Items are moved to Saved Items List.</h4>
                 <center>
-                  <button onClick={handleCloseLater}>
+                  <button onClick={handleCloseAndClearCart}>
                     TAKE ME TO HOMEPAGE
                   </button>
                 </center>
